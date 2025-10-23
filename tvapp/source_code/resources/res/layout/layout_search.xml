@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:tag="layout/layout_search_0" android:paddingTop="@dimen/dp_24" android:paddingBottom="@dimen/dp_24" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginStart="@dimen/dp_80" android:paddingVertical="@dimen/dp_24">
-    <EditText android:textSize="@dimen/sp_20" android:textColor="@color/white" android:id="@+id/editSeach" android:background="@drawable/background_search" android:paddingLeft="@dimen/dp_24" android:paddingRight="@dimen/dp_24" android:layout_width="match_parent" android:layout_height="@dimen/dp_46" android:layout_marginLeft="@dimen/dp_80" android:layout_marginRight="@dimen/dp_80" android:maxLines="1" android:inputType="text" android:imeOptions="actionSearch" android:layout_marginHorizontal="@dimen/dp_80" android:paddingHorizontal="@dimen/dp_24"/>
-</FrameLayout>

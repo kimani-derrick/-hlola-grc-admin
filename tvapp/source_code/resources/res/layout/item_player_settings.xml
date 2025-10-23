@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:tag="layout/item_player_settings_0" android:background="@drawable/background_subttile" android:focusable="true" android:layout_width="match_parent" android:layout_height="wrap_content">
-    <TextView android:textSize="@dimen/sp_15" android:textColor="@color/white" android:id="@+id/textView" android:paddingTop="@dimen/dp_12" android:paddingBottom="@dimen/dp_12" android:nextFocusLeft="@+id/textView" android:nextFocusRight="@+id/textView" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="@dimen/dp_24" android:layout_marginTop="@dimen/dp_12" android:layout_marginRight="@dimen/dp_24" android:layout_marginBottom="@dimen/dp_12" android:layout_marginHorizontal="@dimen/dp_24" android:layout_marginVertical="@dimen/dp_12" android:paddingVertical="@dimen/dp_12"/>
-    <ImageView android:layout_gravity="end|center_vertical" android:id="@+id/imageTick" android:layout_width="@dimen/dp_24" android:layout_height="@dimen/dp_24" android:src="@drawable/ic_setting_player" android:layout_marginEnd="@dimen/dp_24"/>
-    <View android:layout_gravity="top" android:background="@color/color_text_gray" android:layout_width="match_parent" android:layout_height="@dimen/dp_1"/>
-</FrameLayout>

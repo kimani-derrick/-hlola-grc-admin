@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_browse_fragment" android:tag="layout/activity_tv_0" android:layout_width="match_parent" android:layout_height="match_parent">
-    <androidx.fragment.app.FragmentContainerView android:name="com.boxhdo.android.tv.navigation.CustomNavHostFragment" android:id="@+id/nav_host_fragment" android:layout_width="match_parent" android:layout_height="match_parent" app:defaultNavHost="true" app:navGraph="@navigation/nav_tv"/>
-    <ProgressBar android:layout_gravity="center" android:id="@+id/progressBar" android:focusable="true" android:visibility="gone" android:layout_width="@dimen/dp_80" android:layout_height="@dimen/dp_80" android:progressTint="@color/colorPrimary" android:indeterminateTint="@color/colorPrimary"/>
-</FrameLayout>
