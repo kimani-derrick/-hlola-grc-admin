@@ -1,0 +1,45 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 7
+    },
+    "auditLog": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/.d1174dedcd4f7cd0efeaee271f0fef12a2dfbe3f-audit.json",
+    "files": [
+        {
+            "date": 1760595085000,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/access-2025-10-16.log",
+            "hash": "9e46e5642011baa48cc86434b7ac1fe0d5c28f2f9cda652a23e23e537d0dc48e"
+        },
+        {
+            "date": 1760681042821,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/access-2025-10-17.log",
+            "hash": "3cb80854e1a14df33d71c4fd022bcadf605664e548271683ace1921c0d5a98cc"
+        },
+        {
+            "date": 1760893793144,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/access-2025-10-19.log",
+            "hash": "daf9bf6d5925b0de89ce56514eb68512c86674962d7eb4ef852aea905b357cf4"
+        },
+        {
+            "date": 1760963402397,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/access-2025-10-20.log",
+            "hash": "9530c839d2b6690859ea4748ec3167a31de92dcdc8adbd5b53e65c8b3a93854c"
+        },
+        {
+            "date": 1761046451758,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/access-2025-10-21.log",
+            "hash": "f20857d3c05ab507e6f287ab7b3f72956b2d03ba8c3c26b04047832485205e8e"
+        },
+        {
+            "date": 1761080414769,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/access-2025-10-22.log",
+            "hash": "50f05275a4c89b5e880fe2dfdde0abda4b7fcd67ee5d5adbf3db447d765f8464"
+        },
+        {
+            "date": 1761198770570,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/access-2025-10-23.log",
+            "hash": "3c26599212b84cb825f52e81c7f97db44230d0e59fc3af80c051d9fc5639ddaa"
+        }
+    ],
+    "hashType": "sha256"
+}

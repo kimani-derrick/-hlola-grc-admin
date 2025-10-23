@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Streaming Test - Sony Bravia App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #e50914, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 300px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-btn {
+            margin-left: 10px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #e50914, #ff6b6b);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+            color: #ff6b6b;
+        }
+
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .movie-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #333, #555);
+        }
+
+        .movie-info {
+            padding: 15px;
+        }
+
+        .movie-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .movie-year {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .movie-rating {
+            color: #ffd700;
+            font-size: 0.9rem;
+        }
+
+        .streaming-links {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+
+        .streaming-link {
+            display: block;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: linear-gradient(45deg, #e50914, #ff6b6b);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .streaming-link:hover {
+            background: linear-gradient(45deg, #ff6b6b, #e50914);
+        }
+
+        .video-player {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container {
+            width: 90%;
+            height: 80%;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .quality-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 Movie Streaming Test</h1>
+            <p>Test streaming links for Sony Bravia TV App</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchInput" placeholder="Search for movies...">
+            <button class="search-btn" onclick="searchMovies()">Search</button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            🔄 Loading movies...
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+
+        <div id="moviesGrid" class="movies-grid"></div>
+    </div>
+
+    <div id="videoPlayer" class="video-player">
+        <button class="close-btn" onclick="closeVideo()">×</button>
+        <div class="video-container">
+            <video id="videoElement" controls style="width: 100%; height: 100%;">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const YTS_API = 'https://yts.mx/api/v2';
+        const TMDB_API = 'https://api.themoviedb.org/3';
+        const TMDB_API_KEY = 'YOUR_TMDB_API_KEY'; // Replace with your TMDB API key
+
+        // Global variables
+        let currentMovies = [];
+
+        // Search movies function
+        async function searchMovies() {
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (!searchTerm) {
+                alert('Please enter a movie title to search');
+                return;
+            }
+
+            showLoading(true);
+            hideError();
+
+            try {
+                const movies = await fetchMovies(searchTerm);
+                displayMovies(movies);
+            } catch (error) {
+                showError('Error fetching movies: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Fetch movies from YTS API
+        async function fetchMovies(query) {
+            const url = `${YTS_API}/list_movies.json?query_term=${encodeURIComponent(query)}&limit=20`;
+            
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            return data.data.movies || [];
+        }
+
+        // Display movies in grid
+        function displayMovies(movies) {
+            const grid = document.getElementById('moviesGrid');
+            grid.innerHTML = '';
+
+            if (movies.length === 0) {
+                showError('No movies found. Try a different search term.');
+                return;
+            }
+
+            movies.forEach(movie => {
+                const movieCard = createMovieCard(movie);
+                grid.appendChild(movieCard);
+            });
+
+            currentMovies = movies;
+        }
+
+        // Create movie card element
+        function createMovieCard(movie) {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+            
+            const posterUrl = movie.large_cover_image || movie.medium_cover_image || 'https://via.placeholder.com/300x450/333/fff?text=No+Image';
+            
+            card.innerHTML = `
+                <img src="${posterUrl}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://via.placeholder.com/300x450/333/fff?text=No+Image'">
+                <div class="movie-info">
+                    <div class="movie-title">${movie.title}</div>
+                    <div class="movie-year">${movie.year}</div>
+                    <div class="movie-rating">⭐ ${movie.rating}/10</div>
+                    <div class="streaming-links">
+                        ${generateStreamingLinks(movie)}
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Generate streaming links for a movie
+        function generateStreamingLinks(movie) {
+            if (!movie.torrents || movie.torrents.length === 0) {
+                return '<div style="color: #ff6b6b; text-align: center; padding: 10px;">No streaming links available</div>';
+            }
+
+            let linksHtml = '';
+            movie.torrents.forEach(torrent => {
+                const quality = torrent.quality;
+                const size = torrent.size;
+                const url = torrent.url;
+                
+                linksHtml += `
+                    <a href="#" class="streaming-link" onclick="playMovie('${url}', '${movie.title}', '${quality}')">
+                        Play ${quality} <span class="quality-badge">${size}</span>
+                    </a>
+                `;
+            });
+
+            return linksHtml;
+        }
+
+        // Play movie function
+        function playMovie(streamUrl, title, quality) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoElement = document.getElementById('videoElement');
+            
+            // For demonstration, we'll show the torrent URL
+            // In a real app, you'd need a torrent client or streaming service
+            alert(`Streaming: ${title} (${quality})\n\nTorrent URL: ${streamUrl}\n\nNote: This is a test page. In the actual app, you would use a torrent client or streaming service to play the content.`);
+            
+            // Uncomment below to try playing (may not work with direct torrent URLs)
+            // videoElement.src = streamUrl;
+            // videoPlayer.style.display = 'flex';
+        }
+
+        // Close video player
+        function closeVideo() {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoElement = document.getElementById('videoElement');
+            
+            videoElement.pause();
+            videoElement.src = '';
+            videoPlayer.style.display = 'none';
+        }
+
+        // Utility functions
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+
+        // Load popular movies on page load
+        window.onload = function() {
+            loadPopularMovies();
+        };
+
+        // Load popular movies
+        async function loadPopularMovies() {
+            showLoading(true);
+            try {
+                const movies = await fetchMovies('popular');
+                displayMovies(movies);
+            } catch (error) {
+                showError('Error loading popular movies: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Handle Enter key in search box
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchMovies();
+            }
+        });
+    </script>
+</body>
+</html>

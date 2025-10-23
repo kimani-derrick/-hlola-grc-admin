@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:tag="layout/item_relate_0" android:background="@drawable/background_movie" android:padding="@dimen/dp_2" android:focusable="true" android:layout_width="@dimen/dp_120" android:layout_height="@dimen/dp_180">
+    <View android:id="@+id/shimmerLayout" android:background="@drawable/drawable_default_movie" android:layout_width="match_parent" android:layout_height="match_parent"/>
+    <ImageView android:id="@+id/imageMovie" android:layout_width="match_parent" android:layout_height="match_parent" android:scaleType="centerCrop" android:importantForAccessibility="no"/>
+</FrameLayout>

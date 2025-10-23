@@ -1,0 +1,75 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/.85a831a42e5f9492151a6afdb74f16eaa07fd96d-audit.json",
+    "files": [
+        {
+            "date": 1760085510208,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-10.log",
+            "hash": "623275812f1b2fa8dd9052974abbed3bb49ff690e6f82c253d636674261471bf"
+        },
+        {
+            "date": 1760172000021,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-11.log",
+            "hash": "fd29f4de5362ffd7a4a4fcad3ee69157993fa0a3573687940a9d81a6a79ab78c"
+        },
+        {
+            "date": 1760263890335,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-12.log",
+            "hash": "948b3b87e7425845968c21e81aadccbcf072d5c8bf50c53e049bf2343ccf43cd"
+        },
+        {
+            "date": 1760336250885,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-13.log",
+            "hash": "df99d8ee7dea73f839774f9ac269c7ed846cf46031e3667c4a05a06fe3e8e8e6"
+        },
+        {
+            "date": 1760439204607,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-14.log",
+            "hash": "9e8e6ba370841602a3fab22ec654095675c5f21c2d51c0bafd6dfb2165cb9c1f"
+        },
+        {
+            "date": 1760532648115,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-15.log",
+            "hash": "40f4d165a05901b8d78d28e5a5382873e1a9e18b4adb41a63ccde967bf090fe5"
+        },
+        {
+            "date": 1760595084993,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-16.log",
+            "hash": "8a51401d679df9952e53ee90b11ee96e366419b46de67950c7e205f6c3fff17c"
+        },
+        {
+            "date": 1760681042799,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-17.log",
+            "hash": "92dcead6d8bf448418d1a07468f33d038bc8cbe369b26ba555b3a4b220f68bfe"
+        },
+        {
+            "date": 1760893793140,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-19.log",
+            "hash": "8ce4cd1e03e7ab032045f8c5c7f8a80f433c2fd081d4fa225c4b9659b4cbfd3b"
+        },
+        {
+            "date": 1760963402393,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-20.log",
+            "hash": "2820237571d2a20a205ee239acbd241ca0af7d3b1f96e75e0ff135eb484c7f9a"
+        },
+        {
+            "date": 1761046451751,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-21.log",
+            "hash": "9b2630deabed905e88272c4e620aac59a8bdf35443ef89379edb3e38c9223410"
+        },
+        {
+            "date": 1761080414762,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-22.log",
+            "hash": "7199502e8afb808df8d4ebf267d79f4e0bf3b3848e6278f9057a06551d4bfa64"
+        },
+        {
+            "date": 1761198770553,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-platform-main/backend/logs/combined-2025-10-23.log",
+            "hash": "6ef2cb3def1a09dcb324654ba4777be36c435a761e9a13122a1093269521aa2e"
+        }
+    ],
+    "hashType": "sha256"
+}

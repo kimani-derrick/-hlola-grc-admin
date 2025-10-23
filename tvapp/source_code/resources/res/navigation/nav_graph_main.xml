@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph_main" app:startDestination="@+id/home">
+    <fragment android:name="com.boxhdo.android.tv.ui.home.TvHomeFragment" android:id="@+id/home"/>
+    <fragment android:name="com.boxhdo.android.tv.ui.movies.TvMoviesFragment" android:id="@+id/movies"/>
+    <fragment android:name="com.boxhdo.android.tv.ui.tvseries.TvSeriesFragment" android:id="@+id/tvSeries"/>
+    <fragment android:name="com.boxhdo.android.tv.ui.mylist.TvMyListFragment" android:id="@+id/myList"/>
+    <fragment android:name="com.boxhdo.android.tv.ui.search.TvSearchFragment" android:id="@+id/search"/>
+    <fragment android:name="com.boxhdo.android.tv.ui.settings.TvSettingsFragment" android:id="@+id/settings"/>
+</navigation>

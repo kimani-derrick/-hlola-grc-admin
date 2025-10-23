@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/shimmerLayout" android:tag="layout/layout_shimmer_my_list_0" android:paddingTop="@dimen/dp_64" android:layout_width="match_parent" android:layout_height="match_parent" android:paddingStart="@dimen/dp_80" android:paddingEnd="0dp" app:shimmer_auto_start="true">
+    <LinearLayout android:orientation="horizontal" android:id="@+id/layoutMovieShimmer" android:tag="binding_1" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/dp_16" app:layout_constraintBottom_toBottomOf="0">
+        <include android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" layout="@layout/item_movie_shimmer"/>
+        <include android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" android:layout_marginStart="@dimen/dp_12" layout="@layout/item_movie_shimmer"/>
+        <include android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" android:layout_marginStart="@dimen/dp_12" layout="@layout/item_movie_shimmer"/>
+        <include android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" android:layout_marginStart="@dimen/dp_12" layout="@layout/item_movie_shimmer"/>
+        <include android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" android:layout_marginStart="@dimen/dp_12" layout="@layout/item_movie_shimmer"/>
+        <include android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" android:layout_marginStart="@dimen/dp_12" layout="@layout/item_movie_shimmer"/>
+        <include android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" android:layout_marginStart="@dimen/dp_12" layout="@layout/item_movie_shimmer"/>
+    </LinearLayout>
+</com.facebook.shimmer.ShimmerFrameLayout>

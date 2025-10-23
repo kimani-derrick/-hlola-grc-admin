@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_tv" app:startDestination="@+id/splash">
+    <fragment android:name="com.boxhdo.android.tv.ui.splash.TvSplashFragment" android:id="@+id/splash">
+        <action android:id="@+id/goToMain" app:destination="@+id/main" app:popUpTo="@+id/nav_tv" app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment android:name="com.boxhdo.android.tv.ui.hostMain.TvMainFragment" android:id="@+id/main">
+        <action android:id="@+id/goToNetworkDetail" app:destination="@+id/networkDetail" app:enterAnim="@anim/zoom_enter" app:exitAnim="@anim/zoom_exit" app:popEnterAnim="@anim/pop_enter" app:popExitAnim="@anim/pop_exit"/>
+        <action android:id="@+id/goToLogin" app:destination="@+id/login" app:enterAnim="@anim/zoom_enter" app:exitAnim="@anim/zoom_exit" app:popEnterAnim="@anim/pop_enter" app:popExitAnim="@anim/pop_exit"/>
+        <action android:id="@+id/goToSubtitleSettings" app:destination="@+id/subtitleSettings" app:enterAnim="@anim/zoom_enter" app:exitAnim="@anim/zoom_exit" app:popEnterAnim="@anim/pop_enter" app:popExitAnim="@anim/pop_exit"/>
+    </fragment>
+    <fragment android:name="com.boxhdo.android.tv.ui.login.TvLoginFragment" android:id="@+id/login"/>
+    <fragment android:name="com.boxhdo.android.tv.ui.subtitleSettings.SubtitleSettingsFragment" android:id="@+id/subtitleSettings"/>
+    <fragment android:name="com.boxhdo.android.tv.ui.movie_detail.TvMovieDetailFragment" android:id="@+id/movieDetail">
+        <argument android:name="movie" app:argType="com.boxhdo.domain.model.Movie" app:nullable="false"/>
+        <action android:id="@+id/goToEpisodeList" app:destination="@+id/episodeList" app:enterAnim="@anim/zoom_enter" app:exitAnim="@anim/zoom_exit" app:popEnterAnim="@anim/pop_enter" app:popExitAnim="@anim/pop_exit"/>
+    </fragment>
+    <fragment android:name="com.boxhdo.android.tv.ui.episode_list.TvEpisodeListFragment" android:id="@+id/episodeList">
+        <argument android:name="movie" app:argType="com.boxhdo.domain.model.Movie"/>
+    </fragment>
+    <fragment android:name="com.boxhdo.android.tv.ui.update.TVUpdateFragment" android:id="@+id/update">
+        <argument android:name="version" app:argType="com.boxhdo.domain.model.LatestVersion"/>
+        <action android:id="@+id/goToMain" app:destination="@+id/main" app:popUpTo="@+id/nav_tv" app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment android:name="com.boxhdo.android.tv.ui.network_detail.TvNetworkDetailFragment" android:id="@+id/networkDetail">
+        <argument android:name="network" app:argType="com.boxhdo.domain.model.Network"/>
+        <argument android:name="networkType" app:argType="com.boxhdo.domain.type.NetworkType"/>
+    </fragment>
+    <activity android:name="com.boxhdo.android.tv.ui.activity.player.TvPlayerActivity" android:id="@+id/player">
+        <argument android:name="movie" app:argType="com.boxhdo.domain.model.Movie"/>
+        <argument android:name="episodeSource" app:argType="com.boxhdo.domain.model.EpisodeSource" app:nullable="true"/>
+        <argument android:name="seasonNumber" android:defaultValue="1L" app:argType="long"/>
+        <argument android:name="episodeNumber" android:defaultValue="1L" app:argType="long"/>
+        <argument android:name="time" android:defaultValue="0L" app:argType="long"/>
+    </activity>
+    <dialog android:name="com.boxhdo.android.tv.ui.playerLoading.PlayerLoadingFragment" android:id="@+id/playerLoading">
+        <argument android:name="movieId" android:defaultValue="0L" app:argType="long"/>
+        <argument android:name="movieName" app:argType="string"/>
+        <argument android:name="movieType" app:argType="com.boxhdo.domain.type.MediaType"/>
+        <argument android:name="episodeId" android:defaultValue="0L" app:argType="long"/>
+        <argument android:name="seasonNumber" android:defaultValue="1L" app:argType="long"/>
+        <argument android:name="episodeNumber" android:defaultValue="1L" app:argType="long"/>
+        <argument android:name="time" android:defaultValue="0L" app:argType="long"/>
+        <argument android:name="posterPath" android:defaultValue="@null" app:argType="string" app:nullable="true"/>
+        <argument android:name="overview" android:defaultValue="@null" app:argType="string" app:nullable="true"/>
+        <argument android:name="rating" android:defaultValue="0" app:argType="float"/>
+        <argument android:name="releaseDate" android:defaultValue="@null" app:argType="string" app:nullable="true"/>
+        <action android:id="@+id/goToPlayer" app:destination="@+id/player"/>
+    </dialog>
+    <action android:id="@+id/goToDetail" app:destination="@+id/movieDetail" app:enterAnim="@anim/zoom_enter" app:exitAnim="@anim/zoom_exit" app:popEnterAnim="@anim/pop_enter" app:popExitAnim="@anim/pop_exit"/>
+    <action android:id="@+id/goToPlayerLoading" app:destination="@+id/playerLoading"/>
+    <action android:id="@+id/goToUpdate" app:destination="@+id/update" app:popUpTo="@+id/nav_tv" app:popUpToInclusive="true"/>
+</navigation>

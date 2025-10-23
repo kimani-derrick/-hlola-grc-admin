@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:tag="layout/item_menu_0" android:focusable="true" android:layout_width="match_parent" android:layout_height="@dimen/dp_37">
+    <ImageView android:id="@+id/imageIcon" android:focusable="false" android:layout_width="@dimen/dp_17" android:layout_height="@dimen/dp_17" android:tint="@color/color_text_gray" android:layout_centerVertical="true" android:layout_marginStart="@dimen/dp_29"/>
+    <TextView android:id="@+id/text" android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_centerVertical="true" android:layout_marginStart="@dimen/dp_12" android:layout_toEndOf="@+id/imageIcon" style="@style/LeftMenuStyle"/>
+    <View android:id="@+id/viewSelected" android:background="@color/colorPrimary" android:focusable="false" android:visibility="gone" android:layout_width="@dimen/dp_17" android:layout_height="@dimen/dp_2" android:layout_marginTop="@dimen/dp_4" android:layout_below="@+id/imageIcon" android:layout_alignStart="@+id/imageIcon"/>
+</RelativeLayout>

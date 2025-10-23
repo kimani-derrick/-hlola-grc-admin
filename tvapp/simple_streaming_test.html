@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Movie Streaming Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .search-box {
+            width: 300px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .search-btn {
+            padding: 10px 20px;
+            background: #e50914;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .movie-card {
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .movie-card:hover {
+            transform: scale(1.05);
+        }
+        .movie-poster {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .movie-info {
+            padding: 15px;
+        }
+        .movie-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .streaming-link {
+            display: block;
+            background: #e50914;
+            color: white;
+            text-decoration: none;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .video-player {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e50914;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .video-container {
+            width: 90%;
+            height: 80%;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+        }
+        .loading {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 Movie Streaming Test</h1>
+            <p>Test streaming functionality for Sony Bravia TV App</p>
+            <input type="text" class="search-box" id="searchInput" placeholder="Search movies...">
+            <button class="search-btn" onclick="searchMovies()">Search</button>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">Loading movies...</div>
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="moviesGrid" class="movies-grid"></div>
+    </div>
+
+    <div id="videoPlayer" class="video-player">
+        <button class="close-btn" onclick="closeVideo()">×</button>
+        <div class="video-container">
+            <video id="videoElement" controls>
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        // Sample movie data with streaming links
+        const sampleMovies = [
+            {
+                title: "The Dark Knight",
+                year: 2008,
+                rating: 9.0,
+                poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+                streamingLinks: [
+                    {
+                        quality: "1080p",
+                        url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        type: "direct"
+                    },
+                    {
+                        quality: "720p", 
+                        url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                        type: "direct"
+                    }
+                ]
+            },
+            {
+                title: "Inception",
+                year: 2010,
+                rating: 8.8,
+                poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+                streamingLinks: [
+                    {
+                        quality: "1080p",
+                        url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        type: "direct"
+                    }
+                ]
+            },
+            {
+                title: "Interstellar",
+                year: 2014,
+                rating: 8.6,
+                poster: "https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
+                streamingLinks: [
+                    {
+                        quality: "720p",
+                        url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+                        type: "direct"
+                    }
+                ]
+            },
+            {
+                title: "The Matrix",
+                year: 1999,
+                rating: 8.7,
+                poster: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
+                streamingLinks: [
+                    {
+                        quality: "1080p",
+                        url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_5mb.mp4",
+                        type: "direct"
+                    }
+                ]
+            }
+        ];
+
+        // Display sample movies
+        function displayMovies(movies) {
+            const grid = document.getElementById('moviesGrid');
+            grid.innerHTML = '';
+
+            movies.forEach(movie => {
+                const movieCard = createMovieCard(movie);
+                grid.appendChild(movieCard);
+            });
+        }
+
+        // Create movie card
+        function createMovieCard(movie) {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
+            
+            card.innerHTML = `
+                <img src="${movie.poster}" alt="${movie.title}" class="movie-poster">
+                <div class="movie-info">
+                    <div class="movie-title">${movie.title}</div>
+                    <div>Year: ${movie.year}</div>
+                    <div>Rating: ⭐ ${movie.rating}/10</div>
+                    <div style="margin-top: 10px;">
+                        ${movie.streamingLinks.map(link => 
+                            `<a href="#" class="streaming-link" onclick="playMovie('${link.url}', '${movie.title}', '${link.quality}')">Play ${link.quality}</a>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Play movie
+        function playMovie(streamUrl, title, quality) {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoElement = document.getElementById('videoElement');
+            
+            videoElement.src = streamUrl;
+            videoPlayer.style.display = 'flex';
+            
+            // Add title to video player
+            const titleElement = document.createElement('div');
+            titleElement.style.cssText = 'position: absolute; top: 20px; left: 20px; color: white; font-size: 18px; z-index: 1001;';
+            titleElement.textContent = `${title} (${quality})`;
+            videoPlayer.appendChild(titleElement);
+        }
+
+        // Close video
+        function closeVideo() {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoElement = document.getElementById('videoElement');
+            
+            videoElement.pause();
+            videoElement.src = '';
+            videoPlayer.style.display = 'none';
+            
+            // Remove title
+            const titleElement = videoPlayer.querySelector('div[style*="position: absolute"]');
+            if (titleElement) {
+                titleElement.remove();
+            }
+        }
+
+        // Search movies
+        function searchMovies() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            if (!searchTerm) {
+                displayMovies(sampleMovies);
+                return;
+            }
+            
+            const filteredMovies = sampleMovies.filter(movie => 
+                movie.title.toLowerCase().includes(searchTerm)
+            );
+            displayMovies(filteredMovies);
+        }
+
+        // Load movies on page load
+        window.onload = function() {
+            displayMovies(sampleMovies);
+        };
+
+        // Handle Enter key
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchMovies();
+            }
+        });
+    </script>
+</body>
+</html>

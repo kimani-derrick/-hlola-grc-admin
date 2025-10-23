@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:tag="layout/item_continue_watch_0" android:background="@drawable/background_continue_watch" android:padding="@dimen/dp_1" android:focusable="true" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <View android:id="@+id/shimmerLayout" android:background="@drawable/drawable_default_movie" android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160"/>
+    <ImageView android:id="@+id/imageMovie" android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_160" android:scaleType="centerCrop"/>
+    <ProgressBar android:layout_gravity="bottom" android:id="@+id/progressBar" android:layout_width="@dimen/dp_100" android:layout_height="@dimen/dp_2" android:max="100" android:progressTint="@color/colorPrimary" style="?android:attr/progressBarStyleHorizontal"/>
+</FrameLayout>

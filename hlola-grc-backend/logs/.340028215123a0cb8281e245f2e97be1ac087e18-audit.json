@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/home/derrick/Documents/workspace/hlola-grc-backend/logs/.340028215123a0cb8281e245f2e97be1ac087e18-audit.json",
+    "files": [
+        {
+            "date": 1761233492545,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-backend/logs/rejections-2025-10-23.log",
+            "hash": "d4b6505c617b29d74e23c59dc885312c2810499acccb311c2ec3b28c63a8cf84"
+        }
+    ],
+    "hashType": "sha256"
+}

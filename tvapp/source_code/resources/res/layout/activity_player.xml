@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:tag="layout/activity_player_0" android:layout_width="match_parent" android:layout_height="match_parent">
+    <com.google.android.exoplayer2.ui.StyledPlayerView android:id="@+id/playerView" android:focusable="false" android:layout_width="match_parent" android:layout_height="match_parent" app:buffered_color="@color/color_text_gray" app:controller_layout_id="@layout/fragment_tv_player_control" app:resize_mode="fit" app:show_buffering="when_playing" app:unplayed_color="@color/color_text_gray"/>
+    <FrameLayout android:id="@+id/container" android:layout_width="match_parent" android:layout_height="match_parent"/>
+</FrameLayout>
