@@ -32,7 +32,7 @@ export const CreateControlModal = ({ isOpen, onClose, onSubmit, framework }: Cre
     category: 'Technical',
     subcategory: '',
     priority: 'medium',
-    implementationLevel: 'Basic',
+    implementationLevel: 'basic',
     businessImpact: '',
     technicalRequirements: '',
     legalRequirements: '',
@@ -46,12 +46,14 @@ export const CreateControlModal = ({ isOpen, onClose, onSubmit, framework }: Cre
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    onSubmit(formData);
-    setIsSubmitting(false);
-    onClose();
+    try {
+      // Call the real API through the parent component
+      onSubmit(formData);
+    } catch (error) {
+      console.error('Error creating control:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (field: keyof ControlFormData, value: string) => {
@@ -195,10 +197,9 @@ export const CreateControlModal = ({ isOpen, onClose, onSubmit, framework }: Cre
                 onChange={(e) => handleChange('implementationLevel', e.target.value)}
                 className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-hlola-blue focus:border-transparent"
               >
-                <option value="Basic">Basic</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-                <option value="Expert">Expert</option>
+                <option value="basic">Basic</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
               </select>
             </div>
 

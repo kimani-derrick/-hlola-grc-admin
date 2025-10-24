@@ -10,10 +10,12 @@ import { Search, AlertCircle } from 'lucide-react';
 interface FrameworksSectionProps {
   frameworks: Framework[];
   onFrameworkClick: (framework: Framework) => void;
+  onFrameworkDelete?: (framework: Framework) => void;
+  onFrameworkEdit?: (framework: Framework) => void;
   loading?: boolean;
 }
 
-export const FrameworksSection = ({ frameworks, onFrameworkClick, loading = false }: FrameworksSectionProps) => {
+export const FrameworksSection = ({ frameworks, onFrameworkClick, onFrameworkDelete, onFrameworkEdit, loading = false }: FrameworksSectionProps) => {
   const {
     filters,
     filterOptions,
@@ -73,6 +75,8 @@ export const FrameworksSection = ({ frameworks, onFrameworkClick, loading = fals
                 key={framework.id}
                 framework={framework}
                 onClick={onFrameworkClick}
+                onDelete={onFrameworkDelete}
+                onEdit={onFrameworkEdit}
               />
             ))}
           </div>

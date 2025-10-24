@@ -26,6 +26,8 @@ import { FrameworksSection } from '@/components/sections/FrameworksSection';
 import { ControlsSection } from '@/components/sections/ControlsSection';
 import { TasksSection } from '@/components/sections/TasksSection';
 import { CreateFrameworkModal } from '@/components/modals/CreateFrameworkModal';
+import { EditFrameworkModal } from '@/components/modals/EditFrameworkModal';
+import { DeleteFrameworkModal } from '@/components/modals/DeleteFrameworkModal';
 import { CreateControlModal } from '@/components/modals/CreateControlModal';
 import { CreateTaskModal } from '@/components/modals/CreateTaskModal';
 import { SuccessNotification } from '@/components/notifications/SuccessNotification';
@@ -34,6 +36,8 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('frameworks');
   const [searchQuery, setSearchQuery] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -244,10 +248,32 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleCreateControl = (data: any) => {
-    console.log('Creating control:', data);
-    setSuccessMessage(`Control "${data.title}" created successfully!`);
-    setShowSuccessNotification(true);
+  const handleCreateControl = async (data: any) => {
+    setIsSubmitting(true);
+    try {
+      // Add frameworkId to the control data
+      const controlData = {
+        ...data,
+        frameworkId: selectedFramework?.id
+      };
+      
+      const response = await apiService.createControl(controlData);
+      if (response.success) {
+        setSuccessMessage(`Control "${data.title}" created successfully!`);
+        setShowSuccessNotification(true);
+        setShowCreateModal(false);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to create control');
+      }
+    } catch (error) {
+      console.error('Error creating control:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to create control: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCreateTask = (data: any) => {
@@ -356,6 +382,63 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     logout();
+  };
+
+  // Edit and Delete handlers
+  const handleFrameworkEdit = (framework: Framework) => {
+    setSelectedFramework(framework);
+    setShowEditModal(true);
+  };
+
+  const handleFrameworkDelete = (framework: Framework) => {
+    setSelectedFramework(framework);
+    setShowDeleteModal(true);
+  };
+
+  const handleEditFramework = async (id: string, data: any) => {
+    setIsSubmitting(true);
+    try {
+      const response = await apiService.updateFramework(id, data);
+      if (response.success) {
+        setSuccessMessage(`Framework "${data.name}" updated successfully!`);
+        setShowSuccessNotification(true);
+        setShowEditModal(false);
+        setSelectedFramework(null);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to update framework');
+      }
+    } catch (error) {
+      console.error('Error updating framework:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to update framework: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteFramework = async (id: string) => {
+    setIsSubmitting(true);
+    try {
+      const response = await apiService.deleteFramework(id);
+      if (response.success) {
+        setSuccessMessage(`Framework deleted successfully!`);
+        setShowSuccessNotification(true);
+        setShowDeleteModal(false);
+        setSelectedFramework(null);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to delete framework');
+      }
+    } catch (error) {
+      console.error('Error deleting framework:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to delete framework: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -510,6 +593,8 @@ export default function AdminDashboard() {
                     <FrameworksSection 
                       frameworks={frameworks} 
                       onFrameworkClick={handleFrameworkClickWithTab}
+                      onFrameworkEdit={handleFrameworkEdit}
+                      onFrameworkDelete={handleFrameworkDelete}
                       loading={loading}
                     />
                   )}
@@ -596,6 +681,28 @@ export default function AdminDashboard() {
         onClose={() => setShowCreateModal(false)}
         onSubmit={handleCreateTask}
         control={selectedControl}
+      />
+
+      <EditFrameworkModal
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setSelectedFramework(null);
+        }}
+        onSubmit={handleEditFramework}
+        framework={selectedFramework}
+        isSubmitting={isSubmitting}
+      />
+
+      <DeleteFrameworkModal
+        isOpen={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+          setSelectedFramework(null);
+        }}
+        onConfirm={handleDeleteFramework}
+        framework={selectedFramework}
+        isSubmitting={isSubmitting}
       />
 
       {/* Success Notification */}

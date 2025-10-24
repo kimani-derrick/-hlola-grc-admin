@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Coffee Track Recorder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .container {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .code {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        .instructions {
+            background: #333;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 Black Coffee Track Recorder</h1>
+    
+    <div class="container">
+        <h2>Step 1: Copy Your Track Code</h2>
+        <div class="code">// Black Coffee Inspired South African House - Simple Version
+// This should definitely work!
+
+// Set tempo to house music speed
+setcpm(128)
+
+// Main kick drum pattern - Black Coffee style
+d1 $ s "bd*2 ~ bd ~" # gain 0.8
+
+// Hi-hats for groove
+d2 $ s "hh*8" # gain 0.4
+
+// Deep bassline - signature Black Coffee sound
+d3 $ n "c2 ~ ~ c2 ~ ~ ~ ~" # s "bass" # gain 0.7
+
+// Add some African percussion
+d4 $ s "~ conga:2 ~ conga:1 ~ conga:3 ~" # gain 0.5
+
+// Jazzy chord progression
+d5 $ n "c4 e4 g4 ~" # s "piano" # gain 0.4
+
+// Melodic lead with African scales
+d6 $ n "c5 d5 f5 g5 a5 ~ ~ ~" # s "saw" # gain 0.3
+
+// Clear any existing sounds
+hush</div>
+        <button onclick="copyCode()">📋 Copy Code</button>
+    </div>
+
+    <div class="container">
+        <h2>Step 2: Open Strudel</h2>
+        <button onclick="openStrudel()">🌐 Open Strudel.cc</button>
+    </div>
+
+    <div class="container">
+        <h2>Step 3: Record Your Track</h2>
+        <div class="instructions">
+            <h3>How to Record:</h3>
+            <ol>
+                <li>Paste the code into Strudel</li>
+                <li>Click the play button</li>
+                <li>Use browser tools to record audio:</li>
+                <ul>
+                    <li><strong>Chrome/Edge:</strong> Right-click → Inspect → Console → Type: <code>navigator.mediaDevices.getDisplayMedia({audio: true})</code></li>
+                    <li><strong>Firefox:</strong> Use built-in screen recording</li>
+                    <li><strong>Alternative:</strong> Use OBS Studio or similar screen recorder</li>
+                </ul>
+                <li>Record for 2-3 minutes to get a good loop</li>
+                <li>Save as MP3 or WAV</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Step 4: Alternative - Use This Simple Recorder</h2>
+        <button id="recordBtn" onclick="startRecording()">🎙️ Start Recording</button>
+        <button id="stopBtn" onclick="stopRecording()" disabled>⏹️ Stop Recording</button>
+        <button id="downloadBtn" onclick="downloadRecording()" disabled>💾 Download MP3</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        function copyCode() {
+            const code = document.querySelector('.code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Code copied to clipboard!');
+            });
+        }
+
+        function openStrudel() {
+            window.open('https://strudel.cc/', '_blank');
+        }
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = (event) => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const downloadBtn = document.getElementById('downloadBtn');
+                    downloadBtn.disabled = false;
+                    downloadBtn.onclick = () => {
+                        const a = document.createElement('a');
+                        a.href = audioUrl;
+                        a.download = 'black_coffee_track.wav';
+                        a.click();
+                    };
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                document.getElementById('recordBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+                document.getElementById('status').textContent = '🔴 Recording... Play your track in Strudel now!';
+            } catch (err) {
+                alert('Error accessing microphone: ' + err);
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                document.getElementById('recordBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+                document.getElementById('status').textContent = '✅ Recording complete! Click download to save.';
+            }
+        }
+
+        function downloadRecording() {
+            // This will be set up in the onstop event
+        }
+    </script>
+</body>
+</html>

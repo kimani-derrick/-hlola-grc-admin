@@ -9,6 +9,11 @@
             "date": 1761233492542,
             "name": "/home/derrick/Documents/workspace/hlola-grc-backend/logs/error-2025-10-23.log",
             "hash": "2964bebf2bee19865b16520de9c7992921d433908b34ee9d7ab4f4df93f4895c"
+        },
+        {
+            "date": 1761318742775,
+            "name": "/home/derrick/Documents/workspace/hlola-grc-backend/logs/error-2025-10-24.log",
+            "hash": "bbdbde3a4180b521752a45c01571716d85fdf2cbf380a1daef58bc2e53302068"
         }
     ],
     "hashType": "sha256"

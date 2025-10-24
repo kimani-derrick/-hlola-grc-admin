@@ -1,13 +1,35 @@
 import { Framework } from '@/types';
-import { Layers, MoreVertical } from 'lucide-react';
+import { Layers, MoreVertical, Trash2, Edit } from 'lucide-react';
 import { getPriorityColor, getRiskLevelColor } from '@/utils/styling';
+import { useState, useEffect, useRef } from 'react';
 
 interface FrameworkCardProps {
   framework: Framework;
   onClick: (framework: Framework) => void;
+  onDelete?: (framework: Framework) => void;
+  onEdit?: (framework: Framework) => void;
 }
 
-export const FrameworkCard = ({ framework, onClick }: FrameworkCardProps) => {
+export const FrameworkCard = ({ framework, onClick, onDelete, onEdit }: FrameworkCardProps) => {
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMenu]);
   // Helper function to determine if description should be shown
   const shouldShowDescription = (name: string, description: string) => {
     const nameLower = name.toLowerCase();
@@ -47,15 +69,53 @@ export const FrameworkCard = ({ framework, onClick }: FrameworkCardProps) => {
                 <p className="text-slate-600 text-xs sm:text-sm mt-1 leading-relaxed line-clamp-2">{framework.description}</p>
               )}
           </div>
-          <button 
-            className="p-1 text-slate-400 hover:text-hlola-blue transition-colors flex-shrink-0"
-            onClick={(e) => {
-              e.stopPropagation();
-              // TODO: Add menu functionality
-            }}
-          >
-            <MoreVertical className="w-4 h-4" />
-          </button>
+          <div className="relative" ref={menuRef}>
+            <button 
+              className="p-1 text-slate-400 hover:text-hlola-blue transition-colors flex-shrink-0"                                                             
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowMenu(!showMenu);
+              }}
+            >
+              <MoreVertical className="w-4 h-4" />
+            </button>
+            
+            {/* Dropdown Menu */}
+            {showMenu && (
+              <div className="absolute right-0 top-8 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-40 min-w-[120px]">                           
+                {onEdit && (
+                  <button
+                    className="w-full px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"                                    
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowMenu(false);
+                      if (onEdit) {
+                        onEdit(framework);
+                      }
+                    }}
+                  >
+                    <Edit className="w-4 h-4" />
+                    Edit
+                  </button>
+                )}
+                {onDelete && (
+                  <button
+                    className="w-full px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"                                        
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowMenu(false);
+                      if (onDelete) {
+                        onDelete(framework);
+                      }
+                    }}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Tags */}
