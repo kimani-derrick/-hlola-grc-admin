@@ -36,6 +36,11 @@ export type Control = {
   priority: string;
   implementation_level?: string;
   status: string;
+  businessImpact?: string;
+  technicalRequirements?: string;
+  legalRequirements?: string;
+  implementationGuidance?: string;
+  testingProcedures?: string;
   tasksCount?: number;
   complianceScore?: number;
   created_at: string;

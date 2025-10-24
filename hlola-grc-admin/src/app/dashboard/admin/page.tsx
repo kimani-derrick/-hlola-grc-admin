@@ -29,7 +29,11 @@ import { CreateFrameworkModal } from '@/components/modals/CreateFrameworkModal';
 import { EditFrameworkModal } from '@/components/modals/EditFrameworkModal';
 import { DeleteFrameworkModal } from '@/components/modals/DeleteFrameworkModal';
 import { CreateControlModal } from '@/components/modals/CreateControlModal';
+import { EditControlModal } from '@/components/modals/EditControlModal';
+import { DeleteControlModal } from '@/components/modals/DeleteControlModal';
 import { CreateTaskModal } from '@/components/modals/CreateTaskModal';
+import { EditTaskModal } from '@/components/modals/EditTaskModal';
+import { DeleteTaskModal } from '@/components/modals/DeleteTaskModal';
 import { SuccessNotification } from '@/components/notifications/SuccessNotification';
 
 export default function AdminDashboard() {
@@ -38,6 +42,10 @@ export default function AdminDashboard() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditControlModal, setShowEditControlModal] = useState(false);
+  const [showDeleteControlModal, setShowDeleteControlModal] = useState(false);
+  const [showEditTaskModal, setShowEditTaskModal] = useState(false);
+  const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false);
   const [showSuccessNotification, setShowSuccessNotification] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,6 +57,7 @@ export default function AdminDashboard() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   // Use our custom hooks
   const {
@@ -259,8 +268,8 @@ export default function AdminDashboard() {
       
       const response = await apiService.createControl(controlData);
       if (response.success) {
-        setSuccessMessage(`Control "${data.title}" created successfully!`);
-        setShowSuccessNotification(true);
+    setSuccessMessage(`Control "${data.title}" created successfully!`);
+    setShowSuccessNotification(true);
         setShowCreateModal(false);
         await refreshData();
       } else {
@@ -276,10 +285,36 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleCreateTask = (data: any) => {
-    console.log('Creating task:', data);
+  const handleCreateTask = async (data: any) => {
+    setIsSubmitting(true);
+    try {
+      // Add controlId to the task data and handle empty assigneeId
+      // Remove frequency field as it's not accepted by backend validation
+      const { frequency, ...taskDataWithoutFrequency } = data;
+      const taskData = {
+        ...taskDataWithoutFrequency,
+        controlId: selectedControl?.id,
+        // Remove empty assigneeId or set to null if empty
+        assigneeId: data.assigneeId && data.assigneeId.trim() !== '' ? data.assigneeId : null
+      };
+      
+      const response = await apiService.createTask(taskData);
+      if (response.success) {
     setSuccessMessage(`Task "${data.title}" created successfully!`);
     setShowSuccessNotification(true);
+        setShowCreateModal(false);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to create task');
+      }
+    } catch (error) {
+      console.error('Error creating task:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to create task: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Calculate stats from real data
@@ -418,10 +453,15 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDeleteFramework = async (id: string) => {
+  const handleDeleteFramework = async () => {
+    if (!selectedFramework) {
+      console.error('No framework selected for deletion');
+      return;
+    }
+    
     setIsSubmitting(true);
     try {
-      const response = await apiService.deleteFramework(id);
+      const response = await apiService.deleteFramework(selectedFramework.id);
       if (response.success) {
         setSuccessMessage(`Framework deleted successfully!`);
         setShowSuccessNotification(true);
@@ -435,6 +475,144 @@ export default function AdminDashboard() {
       console.error('Error deleting framework:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setSuccessMessage(`Failed to delete framework: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Control Edit and Delete handlers
+  const handleControlEdit = (control: Control) => {
+    setSelectedControl(control);
+    setShowEditControlModal(true);
+  };
+
+  const handleControlDelete = (control: Control) => {
+    setSelectedControl(control);
+    setShowDeleteControlModal(true);
+  };
+
+  const handleEditControl = async (id: string, data: any) => {
+    setIsSubmitting(true);
+    try {
+      const response = await apiService.updateControl(id, data);
+      if (response.success) {
+        setSuccessMessage(`Control "${data.title}" updated successfully!`);
+        setShowSuccessNotification(true);
+        setShowEditControlModal(false);
+        setSelectedControl(null);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to update control');
+      }
+    } catch (error) {
+      console.error('Error updating control:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to update control: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteControl = async () => {
+    if (!selectedControl) {
+      console.error('No control selected for deletion');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    try {
+      const response = await apiService.deleteControl(selectedControl.id);
+      if (response.success) {
+        setSuccessMessage(`Control deleted successfully!`);
+        setShowSuccessNotification(true);
+        setShowDeleteControlModal(false);
+        setSelectedControl(null);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to delete control');
+      }
+    } catch (error) {
+      console.error('Error deleting control:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to delete control: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Task Edit and Delete handlers
+  const handleTaskEdit = (task: Task) => {
+    setSelectedTask(task);
+    setShowEditTaskModal(true);
+  };
+
+  const handleTaskDelete = (task: Task) => {
+    setSelectedTask(task);
+    setShowDeleteTaskModal(true);
+  };
+
+  const handleEditTask = async (id: string, data: any) => {
+    setIsSubmitting(true);
+    try {
+      // Remove frequency field as it's not accepted by backend validation
+      // Handle empty assigneeId - set to null if empty
+      // Handle dueDate - convert to proper date format or null if empty
+      const { frequency, ...taskDataWithoutFrequency } = data;
+      const taskData = {
+        ...taskDataWithoutFrequency,
+        // Ensure integer for estimatedHours per backend Joi schema
+        estimatedHours: Number.isInteger(taskDataWithoutFrequency.estimatedHours)
+          ? taskDataWithoutFrequency.estimatedHours
+          : parseInt(taskDataWithoutFrequency.estimatedHours || 0, 10),
+        assigneeId: data.assigneeId && data.assigneeId.trim() !== '' ? data.assigneeId : null,
+        dueDate: data.dueDate && data.dueDate.trim() !== '' ? new Date(data.dueDate).toISOString() : null
+      };
+      
+      const response = await apiService.updateTask(id, taskData);
+      if (response.success) {
+        setSuccessMessage(`Task "${data.title}" updated successfully!`);
+        setShowSuccessNotification(true);
+        setShowEditTaskModal(false);
+        setSelectedTask(null);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to update task');
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to update task: ${errorMessage}`);
+      setShowSuccessNotification(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleDeleteTask = async () => {
+    if (!selectedTask) {
+      console.error('No task selected for deletion');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    try {
+      const response = await apiService.deleteTask(selectedTask.id);
+      if (response.success) {
+        setSuccessMessage(`Task deleted successfully!`);
+        setShowSuccessNotification(true);
+        setShowDeleteTaskModal(false);
+        setSelectedTask(null);
+        await refreshData();
+      } else {
+        throw new Error(response.message || 'Failed to delete task');
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setSuccessMessage(`Failed to delete task: ${errorMessage}`);
       setShowSuccessNotification(true);
     } finally {
       setIsSubmitting(false);
@@ -603,6 +781,8 @@ export default function AdminDashboard() {
                     <ControlsSection 
                       controls={getCurrentControls}
                       onControlClick={handleControlClickWithTab}
+                      onControlEdit={handleControlEdit}
+                      onControlDelete={handleControlDelete}
                       loading={loading}
                     />
                   )}
@@ -614,6 +794,8 @@ export default function AdminDashboard() {
                         // TODO: Implement task click handler
                         console.log('Task clicked:', task);
                       }}
+                      onTaskEdit={handleTaskEdit}
+                      onTaskDelete={handleTaskDelete}
                       loading={loading}
                     />
                   )}
@@ -701,8 +883,52 @@ export default function AdminDashboard() {
           setSelectedFramework(null);
         }}
         onConfirm={handleDeleteFramework}
-        framework={selectedFramework}
+        frameworkName={selectedFramework?.name || ''}
+        isDeleting={isSubmitting}
+      />
+
+      <EditControlModal
+        isOpen={showEditControlModal}
+        onClose={() => {
+          setShowEditControlModal(false);
+          setSelectedControl(null);
+        }}
+        onSubmit={handleEditControl}
+        control={selectedControl}
         isSubmitting={isSubmitting}
+      />
+
+      <DeleteControlModal
+        isOpen={showDeleteControlModal}
+        onClose={() => {
+          setShowDeleteControlModal(false);
+          setSelectedControl(null);
+        }}
+        onConfirm={handleDeleteControl}
+        control={selectedControl}
+        isDeleting={isSubmitting}
+      />
+
+      <EditTaskModal
+        isOpen={showEditTaskModal}
+        onClose={() => {
+          setShowEditTaskModal(false);
+          setSelectedTask(null);
+        }}
+        onSubmit={handleEditTask}
+        task={selectedTask}
+        isSubmitting={isSubmitting}
+      />
+
+      <DeleteTaskModal
+        isOpen={showDeleteTaskModal}
+        onClose={() => {
+          setShowDeleteTaskModal(false);
+          setSelectedTask(null);
+        }}
+        onConfirm={handleDeleteTask}
+        task={selectedTask}
+        isDeleting={isSubmitting}
       />
 
       {/* Success Notification */}

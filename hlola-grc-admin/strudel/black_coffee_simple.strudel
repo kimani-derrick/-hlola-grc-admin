@@ -1,6 +1,0 @@
-// Black Coffee - Ultra Simple Version
-// This should work without any errors
-
-d1 $ s "bd*2 ~ bd ~" # gain 0.8
-d2 $ s "hh*8" # gain 0.4
-d3 $ n "c2 ~ ~ c2 ~ ~ ~ ~" # s "bass" # gain 0.7

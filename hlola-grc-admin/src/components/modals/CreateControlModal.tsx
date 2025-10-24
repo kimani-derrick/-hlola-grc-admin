@@ -46,14 +46,12 @@ export const CreateControlModal = ({ isOpen, onClose, onSubmit, framework }: Cre
     e.preventDefault();
     setIsSubmitting(true);
     
-    try {
-      // Call the real API through the parent component
-      onSubmit(formData);
-    } catch (error) {
-      console.error('Error creating control:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    onSubmit(formData);
+    setIsSubmitting(false);
+    onClose();
   };
 
   const handleChange = (field: keyof ControlFormData, value: string) => {

@@ -34,15 +34,38 @@ export const CreateTaskModal = ({ isOpen, onClose, onSubmit, control }: CreateTa
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Reset form data to initial state
+  const resetForm = () => {
+    setFormData({
+      title: '',
+      description: '',
+      category: 'Implementation',
+      priority: 'medium',
+      frequency: 'One-time',
+      estimatedHours: 1,
+      dueDate: '',
+      assigneeId: '',
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    onSubmit(formData);
-    setIsSubmitting(false);
+    try {
+      // Call the real API through the parent component
+      onSubmit(formData);
+      // Reset form after successful submission
+      resetForm();
+    } catch (error) {
+      console.error('Error creating task:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleClose = () => {
+    resetForm();
     onClose();
   };
 
@@ -69,7 +92,7 @@ export const CreateTaskModal = ({ isOpen, onClose, onSubmit, control }: CreateTa
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
           >
             <X className="w-5 h-5 text-slate-500" />
@@ -141,7 +164,6 @@ export const CreateTaskModal = ({ isOpen, onClose, onSubmit, control }: CreateTa
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
                   <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
                 </select>
               </div>
             </div>
@@ -221,7 +243,7 @@ export const CreateTaskModal = ({ isOpen, onClose, onSubmit, control }: CreateTa
           <div className="flex items-center justify-end gap-3 pt-6 border-t border-slate-200">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="px-4 py-2 text-slate-600 hover:text-slate-800 transition-colors"
             >
               Cancel

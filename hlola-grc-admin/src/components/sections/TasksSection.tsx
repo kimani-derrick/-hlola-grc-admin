@@ -10,10 +10,12 @@ import { Search, AlertCircle } from 'lucide-react';
 interface TasksSectionProps {
   tasks: Task[];
   onTaskClick: (task: Task) => void;
+  onTaskEdit?: (task: Task) => void;
+  onTaskDelete?: (task: Task) => void;
   loading?: boolean;
 }
 
-export const TasksSection = ({ tasks, onTaskClick, loading = false }: TasksSectionProps) => {
+export const TasksSection = ({ tasks, onTaskClick, onTaskEdit, onTaskDelete, loading = false }: TasksSectionProps) => {
   const {
     filters,
     filterOptions,
@@ -71,6 +73,8 @@ export const TasksSection = ({ tasks, onTaskClick, loading = false }: TasksSecti
                 key={task.id}
                 task={task}
                 onClick={onTaskClick}
+                onEdit={onTaskEdit}
+                onDelete={onTaskDelete}
               />
             ))}
           </div>

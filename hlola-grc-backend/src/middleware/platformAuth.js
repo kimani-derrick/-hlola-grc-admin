@@ -40,6 +40,15 @@ const authenticatePlatformAdmin = async (req, res, next) => {
       lastName: admin.last_name
     };
 
+    // Provide a user-like context for controllers that expect req.user
+    // Platform admin has global scope (no org restriction)
+    req.user = {
+      organizationId: null,
+      userId: admin.id,
+      role: 'admin',
+      isPlatformAdmin: true
+    };
+
     next();
   } catch (error) {
     return res.status(403).json({ 

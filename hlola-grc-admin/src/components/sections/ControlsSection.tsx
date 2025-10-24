@@ -10,10 +10,12 @@ import { Search, AlertCircle } from 'lucide-react';
 interface ControlsSectionProps {
   controls: Control[];
   onControlClick: (control: Control) => void;
+  onControlDelete?: (control: Control) => void;
+  onControlEdit?: (control: Control) => void;
   loading?: boolean;
 }
 
-export const ControlsSection = ({ controls, onControlClick, loading = false }: ControlsSectionProps) => {
+export const ControlsSection = ({ controls, onControlClick, onControlDelete, onControlEdit, loading = false }: ControlsSectionProps) => {
   const {
     filters,
     filterOptions,
@@ -71,6 +73,8 @@ export const ControlsSection = ({ controls, onControlClick, loading = false }: C
                 key={control.id}
                 control={control}
                 onClick={onControlClick}
+                onDelete={onControlDelete}
+                onEdit={onControlEdit}
               />
             ))}
           </div>
