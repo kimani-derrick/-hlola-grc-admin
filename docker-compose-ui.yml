@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  hlola-grc-ui:
+    image: hlola-grc-ui:latest
+    container_name: hlola-grc-ui
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://api.hlola.io
+      - NEXTAUTH_URL=https://test.hlola.io
+      - NEXTAUTH_SECRET=your-grc-production-secret-key
+    restart: unless-stopped
+    networks:
+      - hlola-network
+
+  hlola-grc-admin:
+    image: hlola-grc-admin:latest
+    container_name: hlola-grc-admin
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=https://api.hlola.io
+      - NEXTAUTH_URL=https://admin.hlola.io
+      - NEXTAUTH_SECRET=your-admin-production-secret-key
+    restart: unless-stopped
+    networks:
+      - hlola-network
+
+networks:
+  hlola-network:
+    external: true
