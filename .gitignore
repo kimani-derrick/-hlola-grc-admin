@@ -85,3 +85,28 @@ jspm_packages/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Upload directories
+uploads/
+*/uploads/
+
+# Large file types
+*.pdf
+*.jpeg
+*.jpg
+*.png
+*.gif
+*.mp4
+*.mp3
+*.zip
+*.rar
+*.7z
+
+# Evidence files
+*evidence*
+*_evidence_*
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
