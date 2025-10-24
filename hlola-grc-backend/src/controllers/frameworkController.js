@@ -141,7 +141,28 @@ const updateFramework = async (req, res, next) => {
       updates: updates
     });
 
-    const updatedFramework = await Framework.update(id, updates);
+    // Convert camelCase to snake_case for database fields
+    const dbUpdates = {
+      ...updates,
+      ...(updates.complianceDeadline !== undefined && { compliance_deadline: updates.complianceDeadline }),
+      ...(updates.riskLevel !== undefined && { risk_level: updates.riskLevel }),
+      ...(updates.requirementsCount !== undefined && { requirements_count: updates.requirementsCount }),
+      ...(updates.applicableCountries !== undefined && { applicable_countries: updates.applicableCountries }),
+      ...(updates.industryScope !== undefined && { industry_scope: updates.industryScope }),
+      ...(updates.maxFineAmount !== undefined && { max_fine_amount: updates.maxFineAmount }),
+      ...(updates.maxFineCurrency !== undefined && { max_fine_currency: updates.maxFineCurrency })
+    };
+
+    // Remove camelCase versions
+    delete dbUpdates.complianceDeadline;
+    delete dbUpdates.riskLevel;
+    delete dbUpdates.requirementsCount;
+    delete dbUpdates.applicableCountries;
+    delete dbUpdates.industryScope;
+    delete dbUpdates.maxFineAmount;
+    delete dbUpdates.maxFineCurrency;
+
+    const updatedFramework = await Framework.update(id, dbUpdates);
 
     if (!updatedFramework) {
       return res.status(404).json({

@@ -128,7 +128,8 @@ class Framework {
     const allowedFields = [
       'name', 'description', 'region', 'country', 'category', 'type', 
       'icon', 'color', 'compliance_deadline', 'priority', 'risk_level', 
-      'status', 'requirements_count', 'applicable_countries', 'industry_scope'
+      'status', 'requirements_count', 'applicable_countries', 'industry_scope',
+      'max_fine_amount', 'max_fine_currency'
     ];
 
     for (const [key, value] of Object.entries(updates)) {
@@ -149,7 +150,7 @@ class Framework {
       `UPDATE frameworks 
        SET ${updateFields.join(', ')}
        WHERE id = $${paramCount} AND is_active = true
-       RETURNING id, name, description, region, country, category, type, icon, color, compliance_deadline, priority, risk_level, status, requirements_count, applicable_countries, industry_scope, updated_at`,
+       RETURNING id, name, description, region, country, category, type, icon, color, compliance_deadline, priority, risk_level, status, requirements_count, applicable_countries, industry_scope, max_fine_amount, max_fine_currency, updated_at`,
       values
     );
     return result.rows[0];

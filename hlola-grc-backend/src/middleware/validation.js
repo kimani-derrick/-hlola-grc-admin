@@ -223,7 +223,9 @@ const updateFrameworkSchema = Joi.object({
   }),
   requirementsCount: Joi.number().integer().min(0).optional(),
   applicableCountries: Joi.array().items(Joi.string()).optional(),
-  industryScope: Joi.string().max(100).optional().allow('')
+  industryScope: Joi.string().max(100).optional().allow(''),
+  maxFineAmount: Joi.string().optional().allow(''),
+  maxFineCurrency: Joi.string().max(10).optional()
 });
 
 const assignFrameworkSchema = Joi.object({
