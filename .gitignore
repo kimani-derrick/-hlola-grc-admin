@@ -30,6 +30,13 @@ Thumbs.db
 logs/
 *.log
 
+# Deployment packages
+*.tar.gz
+*.tar.xz
+*-deployment.tar.gz
+*-deployment.tar.xz
+deployment-package/
+
 # Runtime data
 pids/
 *.pid
